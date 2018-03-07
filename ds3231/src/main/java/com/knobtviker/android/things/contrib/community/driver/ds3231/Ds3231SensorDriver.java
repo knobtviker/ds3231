@@ -4,9 +4,9 @@ import android.hardware.Sensor;
 import android.support.annotation.Nullable;
 
 import com.google.android.things.userdriver.UserDriverManager;
-import com.google.android.things.userdriver.UserSensor;
-import com.google.android.things.userdriver.UserSensorDriver;
-import com.google.android.things.userdriver.UserSensorReading;
+import com.google.android.things.userdriver.sensor.UserSensor;
+import com.google.android.things.userdriver.sensor.UserSensorDriver;
+import com.google.android.things.userdriver.sensor.UserSensorReading;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -85,7 +85,7 @@ public class Ds3231SensorDriver implements AutoCloseable {
 
         if (temperatureUserDriver == null) {
             temperatureUserDriver = new TemperatureUserDriver();
-            UserDriverManager.getManager().registerSensor(temperatureUserDriver.getUserSensor());
+            UserDriverManager.getInstance().registerSensor(temperatureUserDriver.getUserSensor());
         }
     }
 
@@ -94,7 +94,7 @@ public class Ds3231SensorDriver implements AutoCloseable {
      */
     public void unregisterTemperatureSensor() {
         if (temperatureUserDriver != null) {
-            UserDriverManager.getManager().unregisterSensor(temperatureUserDriver.getUserSensor());
+            UserDriverManager.getInstance().unregisterSensor(temperatureUserDriver.getUserSensor());
             temperatureUserDriver = null;
         }
     }
@@ -107,7 +107,7 @@ public class Ds3231SensorDriver implements AutoCloseable {
         return device;
     }
 
-    private class TemperatureUserDriver extends UserSensorDriver {
+    private class TemperatureUserDriver implements UserSensorDriver {
         private UserSensor userSensor;
 
         private UserSensor getUserSensor() {
